@@ -7,11 +7,10 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"log"
-	"os"
 	"sync"
 	"testing"
 
-	dockermachinedriverproxmoxve "github.com/lnxbil/docker-machine-driver-proxmox-ve"
+	dockermachinedriverproxmoxve "github.com/cperrin88/docker-machine-driver-proxmox-ve"
 )
 
 // ProxmoxConfig represents all needed login information
@@ -33,10 +32,12 @@ func GetProxmoxConfigInstance() *ProxmoxConfig {
 
 		if err != nil {
 			log.Fatal(err)
-			os.Exit(1)
 		}
 		var config ProxmoxConfig
-		json.Unmarshal(content, &config)
+		err = json.Unmarshal(content, &config)
+		if err != nil {
+			log.Fatal(err)
+		}
 		instance = &config
 	})
 	return instance

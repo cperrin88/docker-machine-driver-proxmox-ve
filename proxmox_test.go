@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"testing"
 
-	dockermachinedriverproxmoxve "github.com/lnxbil/docker-machine-driver-proxmox-ve"
+	dockermachinedriverproxmoxve "github.com/cperrin88/docker-machine-driver-proxmox-ve"
 )
 
 func TestSuccessfulConnection(t *testing.T) {
@@ -31,7 +31,7 @@ func TestWrongPass(t *testing.T) {
 }
 func TestWrongUser(t *testing.T) {
 	_, password, realm, host := GetProxmoxAccess()
-	_, err := dockermachinedriverproxmoxve.GetProxmoxVEConnectionByValues("root", password, realm, host)
+	_, err := dockermachinedriverproxmoxve.GetProxmoxVEConnectionByValues("rootibus", password, realm, host)
 	if err == nil {
 		t.Log(err)
 		t.Error()
@@ -56,7 +56,7 @@ func TestWrongHost(t *testing.T) {
 	}
 }
 
-func checkStorageType(t *testing.T, api *dockermachinedriverproxmoxve.ProxmoxVE, storageName string, shouldStorageType string) error {
+func checkStorageType(api *dockermachinedriverproxmoxve.ProxmoxVE, storageName string, shouldStorageType string) error {
 	ret, err := api.GetStorageType(GetProxmoxNode(), storageName)
 	if err != nil {
 		return err
@@ -70,32 +70,32 @@ func checkStorageType(t *testing.T, api *dockermachinedriverproxmoxve.ProxmoxVE,
 func TestStorageType(t *testing.T) {
 	api := EstablishConnection(t)
 
-	err := checkStorageType(t, api, "local-lvm", "lvmthin")
+	err := checkStorageType(api, "local-lvm", "lvmthin")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	err = checkStorageType(t, api, "local", "dir")
+	err = checkStorageType(api, "local", "dir")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	err = checkStorageType(t, api, "nfs", "nfs")
+	err = checkStorageType(api, "nfs", "nfs")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	err = checkStorageType(t, api, "zpool", "zfspool")
+	err = checkStorageType(api, "zpool", "zfspool")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	err = checkStorageType(t, api, "lvm", "lvm")
+	err = checkStorageType(api, "lvm", "lvm")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	err = checkStorageType(t, api, "not-existent", "2")
+	err = checkStorageType(api, "not-existent", "2")
 	if err == nil {
 		t.Fatalf("non-existent storage should have raised an error")
 	}

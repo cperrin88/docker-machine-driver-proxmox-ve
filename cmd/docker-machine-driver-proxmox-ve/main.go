@@ -1,8 +1,8 @@
 package main
 
 import (
+	proxmoxve "github.com/cperrin88/docker-machine-driver-proxmox-ve"
 	"github.com/docker/machine/libmachine/drivers/plugin"
-	proxmoxve "github.com/lnxbil/docker-machine-driver-proxmox-ve"
 )
 
 func main() {

@@ -14,7 +14,7 @@ import (
 	"time"
 
 	"golang.org/x/crypto/ssh"
-	resty "gopkg.in/resty.v1"
+	"gopkg.in/resty.v1"
 
 	sshrw "github.com/mosolovsa/go_cat_sshfilerw"
 
@@ -89,92 +89,92 @@ func (d *Driver) connectAPI() error {
 func (d *Driver) GetCreateFlags() []mcnflag.Flag {
 	return []mcnflag.Flag{
 		mcnflag.StringFlag{
-			EnvVar: "PROXMOX_HOST",
-			Name:   "proxmox-host",
+			EnvVar: "PROXMOXVE_HOST",
+			Name:   "proxmoxve-host",
 			Usage:  "Host to connect to",
 			Value:  "192.168.1.253",
 		},
 		mcnflag.StringFlag{
-			EnvVar: "PROXMOX_DISKSIZE_GB",
-			Name:   "proxmox-disksize-gb",
+			EnvVar: "PROXMOXVE_DISKSIZE_GB",
+			Name:   "proxmoxve-disksize-gb",
 			Usage:  "disk size in GB",
 			Value:  "16",
 		},
 		mcnflag.IntFlag{
-			EnvVar: "PROXMOX_MEMORY_GB",
-			Name:   "proxmox-memory-gb",
+			EnvVar: "PROXMOXVE_MEMORY_GB",
+			Name:   "proxmoxve-memory-gb",
 			Usage:  "memory in GB",
 			Value:  8,
 		},
 		mcnflag.StringFlag{
-			EnvVar: "PROXMOX_STORAGE",
-			Name:   "proxmox-storage",
+			EnvVar: "PROXMOXVE_STORAGE",
+			Name:   "proxmoxve-storage",
 			Usage:  "storage to create the VM volume on",
 			Value:  "local",
 		},
 		mcnflag.StringFlag{
-			EnvVar: "PROXMOX_NODE",
-			Name:   "proxmox-node",
+			EnvVar: "PROXMOXVE_NODE",
+			Name:   "proxmoxve-node",
 			Usage:  "to to use (defaults to host)",
 			Value:  "",
 		},
 		mcnflag.StringFlag{
-			EnvVar: "PROXMOX_USER",
-			Name:   "proxmox-user",
+			EnvVar: "PROXMOXVE_USER",
+			Name:   "proxmoxve-user",
 			Usage:  "User to connect as",
 			Value:  "root",
 		},
 		mcnflag.StringFlag{
-			EnvVar: "PROXMOX_REALM",
-			Name:   "proxmox-realm",
+			EnvVar: "PROXMOXVE_REALM",
+			Name:   "proxmoxve-realm",
 			Usage:  "Realm to connect to (default: pam)",
 			Value:  "pam",
 		},
 		mcnflag.StringFlag{
-			EnvVar: "PROXMOX_PASSWORD",
-			Name:   "proxmox-password",
+			EnvVar: "PROXMOXVE_PASSWORD",
+			Name:   "proxmoxve-password",
 			Usage:  "Password to connect with",
 			Value:  "",
 		},
 		mcnflag.StringFlag{
-			EnvVar: "PROXMOX_IMAGE_FILE",
-			Name:   "proxmox-image-file",
+			EnvVar: "PROXMOXVE_IMAGE_FILE",
+			Name:   "proxmoxve-image-file",
 			Usage:  "storage of the image file (e.g. local:iso/rancheros-proxmoxve-autoformat.iso)",
 			Value:  "",
 		},
 		mcnflag.StringFlag{
-			EnvVar: "PROXMOX_POOL",
-			Name:   "proxmox-pool",
+			EnvVar: "PROXMOXVE_POOL",
+			Name:   "proxmoxve-pool",
 			Usage:  "pool to attach to",
 			Value:  "",
 		},
 		mcnflag.StringFlag{
-			EnvVar: "PROXMOX_STORAGE_TYPE",
-			Name:   "proxmox-storage-type",
+			EnvVar: "PROXMOXVE_STORAGE_TYPE",
+			Name:   "proxmoxve-storage-type",
 			Usage:  "storage type to use (QCOW2 or RAW)",
 			Value:  "raw",
 		},
 		mcnflag.StringFlag{
-			Name:  "proxmox-guest-username",
+			Name:  "proxmoxve-guest-username",
 			Usage: "Username to log in to the guest OS (default docker for rancheros)",
 			Value: "docker",
 		},
 		mcnflag.StringFlag{
-			Name:  "proxmox-guest-password",
+			Name:  "proxmoxve-guest-password",
 			Usage: "Password to log in to the guest OS (default tcuser for rancheros)",
 			Value: "tcuser",
 		},
 		mcnflag.IntFlag{
-			Name:  "proxmox-guest-ssh-port",
+			Name:  "proxmoxve-guest-ssh-port",
 			Usage: "SSH port in the guest to log in to (defaults to 22)",
 			Value: 22,
 		},
 		mcnflag.BoolFlag{
-			Name:  "proxmox-resty-debug",
+			Name:  "proxmoxve-resty-debug",
 			Usage: "enables the resty debugging",
 		},
 		mcnflag.BoolFlag{
-			Name:  "proxmox-driver-debug",
+			Name:  "proxmoxve-driver-debug",
 			Usage: "enables debugging in the driver",
 		},
 	}
@@ -204,30 +204,30 @@ func (d *Driver) DriverName() string {
 // SetConfigFromFlags configures all command line arguments
 func (d *Driver) SetConfigFromFlags(flags drivers.DriverOptions) error {
 	d.debug("SetConfigFromFlags called")
-	d.ImageFile = flags.String("proxmox-image-file")
-	d.Host = flags.String("proxmox-host")
-	d.Node = flags.String("proxmox-node")
+	d.ImageFile = flags.String("proxmoxve-image-file")
+	d.Host = flags.String("proxmoxve-host")
+	d.Node = flags.String("proxmoxve-node")
 	if len(d.Node) == 0 {
 		d.Node = d.Host
 	}
-	d.User = flags.String("proxmox-user")
-	d.Realm = flags.String("proxmox-realm")
-	d.Pool = flags.String("proxmox-pool")
-	d.Password = flags.String("proxmox-password")
-	d.DiskSize = flags.String("proxmox-disksize-gb")
-	d.Storage = flags.String("proxmox-storage")
-	d.StorageType = strings.ToLower(flags.String("proxmox-storage-type"))
-	d.Memory = flags.Int("proxmox-memory-gb")
+	d.User = flags.String("proxmoxve-user")
+	d.Realm = flags.String("proxmoxve-realm")
+	d.Pool = flags.String("proxmoxve-pool")
+	d.Password = flags.String("proxmoxve-password")
+	d.DiskSize = flags.String("proxmoxve-disksize-gb")
+	d.Storage = flags.String("proxmoxve-storage")
+	d.StorageType = strings.ToLower(flags.String("proxmoxve-storage-type"))
+	d.Memory = flags.Int("proxmoxve-memory-gb")
 	d.Memory *= 1024
 
 	d.SwarmMaster = flags.Bool("swarm-master")
 	d.SwarmHost = flags.String("swarm-host")
-	d.GuestSSHPort = flags.Int("proxmox-guest-ssh-port")
-	d.GuestUsername = flags.String("proxmox-guest-username")
-	d.GuestPassword = flags.String("proxmox-guest-password")
+	d.GuestSSHPort = flags.Int("proxmoxve-guest-ssh-port")
+	d.GuestUsername = flags.String("proxmoxve-guest-username")
+	d.GuestPassword = flags.String("proxmoxve-guest-password")
 
-	d.driverDebug = flags.Bool("proxmox-driver-debug")
-	d.restyDebug = flags.Bool("proxmox-resty-debug")
+	d.driverDebug = flags.Bool("proxmoxve-driver-debug")
+	d.restyDebug = flags.Bool("proxmoxve-resty-debug")
 
 	if d.restyDebug {
 		d.debug("enabling Resty debugging")
