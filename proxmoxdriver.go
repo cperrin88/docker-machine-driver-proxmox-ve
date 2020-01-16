@@ -330,6 +330,7 @@ func (d *Driver) PreCreateCheck() error {
 			return fmt.Errorf("type '%s' on storage '%s' does only support raw", storageType, d.Storage)
 		}
 	case "dir":
+	case "nfs":
 		filename += "." + d.StorageType
 	}
 	d.StorageFilename = filename

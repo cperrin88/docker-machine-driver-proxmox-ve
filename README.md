@@ -33,22 +33,22 @@ docker-machine rm --force $VM_NAME >/dev/null 2>&1 || true
 docker-machine --debug \
     create \
     --driver proxmox-ve \
-    --proxmox-host $PVE_HOST \
-    --proxmox-user $PVE_USER \
-    --proxmox-realm $PVE_REALM \
-    --proxmox-password $PVE_PASSWD  \
-    --proxmox-node $PVE_NODE \
-    --proxmox-memory-gb $PVE_MEMORY \
-    --proxmox-image-file "$PVE_IMAGE_FILE" \
-    --proxmox-storage $PVE_STORAGE \
-    --proxmox-pool $PVE_POOL \
-    --proxmox-storage-type $PVE_STORAGE_TYPE \
+    --proxmoxve-host $PVE_HOST \
+    --proxmoxve-user $PVE_USER \
+    --proxmoxve-realm $PVE_REALM \
+    --proxmoxve-password $PVE_PASSWD  \
+    --proxmoxve-node $PVE_NODE \
+    --proxmoxve-memory-gb $PVE_MEMORY \
+    --proxmoxve-image-file "$PVE_IMAGE_FILE" \
+    --proxmoxve-storage $PVE_STORAGE \
+    --proxmoxve-pool $PVE_POOL \
+    --proxmoxve-storage-type $PVE_STORAGE_TYPE \
     \
-    --proxmox-guest-username $GUEST_USERNAME \
-    --proxmox-guest-password $GUEST_PASSWORD \
+    --proxmoxve-guest-username $GUEST_USERNAME \
+    --proxmoxve-guest-password $GUEST_PASSWORD \
     \
-    --proxmox-resty-debug \
-    --proxmox-driver-debug \
+    --proxmoxve-resty-debug \
+    --proxmoxve-driver-debug \
     \
     $* \
     $VM_NAME 
@@ -68,7 +68,7 @@ the test machines.
 
 Here is what I use (based on ZFS):
 
-* create a pool for use as `--proxmox-pool docker-machine`
+* create a pool for use as `--proxmoxve-pool docker-machine`
 
         pvesh create /pools -poolid docker-machine
 
